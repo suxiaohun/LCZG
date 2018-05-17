@@ -1,0 +1,215 @@
+<style type="text/css">
+  table {
+    border-collapse: collapse;
+    margin-top: 35px;
+    margin-left: 35px;
+
+  }
+
+  td {
+    border: 1px solid blue;
+    padding: 5px;
+  }
+
+  .pre_title td {
+    text-align: center;
+  }
+
+  tfoot td {
+    border: none;
+  }
+
+  .number {
+    text-align: right;
+  }
+
+  .net_page{page-break-after:always;}
+</style>
+
+<OBJECT id=WebBrowser classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2 height=0 width=0 VIEWASTEXT>
+
+</OBJECT>
+
+<button type="button" class="btn btn-success" onclick="print_page('myDiv')" style="line-height: 50px;font-weight: bolder;min-width: 120px;">打印</button>
+<%= link_to '返回列表', orders_path, :class => 'btn btn-default' %>
+
+<%
+  html_head = ''
+  html_head<<"<div class='net_page'>"
+  html_head<<"<table>"
+  html_head<<"<caption style=\"text-align: center;font-size: 24px;font-weight: bold;\">聊城智高文具有限公司</caption>"
+  html_head<<"<thead>"
+  html_head<<"<tr>"
+  html_head<<"<td colspan=\"3\">往来单位："+@order.customer_name+"</td>"
+  html_head<<"<td colspan=\"3\">单据日期："+@order.order_date.to_s+"</td>"
+  html_head<<"<td colspan=\"3\" align=\"right\">单据编号："+@order.number+"</td>"
+  html_head<<"<tr>"
+  html_head<<"<tr class=\"pre_title\">"
+  html_head<<"<td>行号</td>"
+  html_head<<"<td>商品编码</td>"
+  html_head<<"<td>商品名称</td>"
+  html_head<<"<td>规格</td>"
+  html_head<<"<td>产品单价</td>"
+  html_head<<"<td>数量</td>"
+  html_head<<"<td>单价</td>"
+  html_head<<"<td>金额</td>"
+  html_head<<"<td>备注</td>"
+  html_head<<"</tr>"
+  html_head<<"</thead>"
+  html_head<<"<tbody>"
+
+
+  html_foot = ''
+
+
+
+%>
+
+
+<div id="myDiv">
+  <div class="net_page">
+    <table>
+      <caption style="text-align: center;font-size: 24px;font-weight: bold;">聊城智高文具有限公司</caption>
+      <thead>
+      <tr>
+        <td colspan="3">往来单位：<%= @order.customer_name %></td>
+        <td colspan="3">单据日期：<%= @order.order_date %></td>
+        <td colspan="3" align="right">单据编号：<%= @order.number %></td>
+      </tr>
+      <tr class="pre_title">
+        <td>行号</td>
+        <td>商品编码</td>
+        <td>商品名称</td>
+        <td>规格</td>
+        <td>产品单价</td>
+        <td>数量</td>
+        <td>单价</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      <%
+        temp_count = 0
+        temp_amount = 0
+        total_count = 0
+        count = 0
+        page_count = 1
+
+
+        page_size = @details.size/5
+        k = @details.size%5
+        page_size+=1 unless k == 0
+
+        @details.each_with_index do |dd, i|
+          count += 1
+          if count == 6
+            %>
+              <tr>
+                <td colspan="5">页小计</td>
+                <td class="number"><%= temp_count %></td>
+                <td></td>
+                <td class="number"><%= sprintf('%.2f', temp_amount) %></td>
+                <td></td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="4">
+                  制单:&nbsp;&nbsp;葛璐璐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司电话:&nbsp;&nbsp;0635-6178595
+                </td>
+                <td style="text-align: right;"><%= page_count %>/<%= page_size %></td>
+              </tr>
+              </tfoot>
+              </table>
+              </div>
+      <%= html_head.html_safe %>
+          <%
+            count = 1
+            page_count += 1
+            temp_count = 0
+            temp_amount = 0
+          end
+          total_count+=dd.count
+          temp_count+=dd.count
+          temp_amount+=dd.amount
+      %>
+          <tr>
+            <td style="text-align: center;"><%= i+1 %></td>
+            <td><%= dd.good_code %></td>
+            <td><%= dd.good_name %></td>
+            <td><%= dd.mode_count.to_s+dd.mode_desc %></td>
+            <td class="number"><%= dd.unit_price.round(2) %></td>
+            <td class="number"><%= dd.count %></td>
+            <td class="number"><%= dd.price %></td>
+            <td class="number"><%= sprintf('%.2f', dd.amount) %></td>
+            <td><%= dd.remark %></td>
+          </tr>
+      <% end %>
+
+      <tr>
+        <td colspan="5">页小计</td>
+        <td class="number"><%= temp_count %></td>
+        <td></td>
+        <td class="number"><%= sprintf('%.2f', temp_amount) %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="5">合计</td>
+        <td class="number"><%= total_count %></td>
+        <td></td>
+        <td class="number"><%= sprintf('%.2f', @order.total_amount) %></td>
+        <td></td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="4"></td>
+        <td colspan="4">
+          制单:&nbsp;&nbsp;葛璐璐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司电话:&nbsp;&nbsp;0635-6178595
+        </td>
+        <td style="text-align: right;"><%= page_count %>/<%= page_size %></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script type="text/javascript">
+    function print_page(elem) {
+        var mywindow = window.open('', 'PRINT');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            ' table{ border-collapse: collapse;'
+            + 'margin-top: 30px;margin-left: 30px; }' +
+            'td{' +
+            'border: 1px solid blue;font-size:16px' +
+            'padding: 5px;}' +
+            '.number { text-align: right; padding-right: 3px; }' +
+            ' .pre_title td { text-align: center;  }' +
+            '  @page { size: auto;   margin: 0mm; }' +
+            'tfoot td { border: none; }'+
+                '.net_page{page-break-after:always;}'
+            + '</style>';
+        mywindow.document.write('<html><head><title>' + '' + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(htmlToPrint);
+        mywindow.document.write('<h1>' + '' + '</h1>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+</script>
+
+

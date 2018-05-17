@@ -1,0 +1,40 @@
+<style type="text/css">
+  .btn{
+    font-size: 20px;
+    font-weight: bolder;
+    min-width: 100px;
+    line-height: 50px;
+    margin-bottom: 30px;
+  }
+</style>
+<div style="text-align: center;margin-top: 50px;">
+  <%= link_to '客户',customers_path,:class=>'btn btn-info btn-large' %><br>
+  <%= link_to '商品',goods_path,:class=>'btn btn-primary btn-large' %><br>
+  <%= link_to '库存',inventories_path,:class=>'btn btn-warning btn-large' %><br>
+  <%= link_to '订单',orders_path,:class=>'btn btn-success btn-large' %>
+</div>
+
+<div id="myModal" class="modal" style="width: 600px;min-height: 250px;">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal" >&times;</a>
+    <h3>对话框标题</h3>
+  </div>
+  <div class="modal-body" style="width: 600px;min-height: 250px;">
+    <h4>对话框文字</h4>
+    <p>
+      高考临近，湖北孝感惊现史上最刻苦“吊瓶班”。这是昨日孝感市第一高级中学某晚自习教室的一幕，"吊瓶高考班"轰动全校！不知台上的老师面对如此震撼的场面和沁人心脾的药水味，如何站稳脚跟hold住全场呢？该校学生表示，备战高考，补充能量挨几针也是值得的，你hold住了吗？
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal" >关闭</a>
+    <a href="#" class="btn btn-primary">保存更改</a>
+  </div>
+</div>
+
+
+
+
+<hr>
+
+
+

@@ -1,0 +1,33 @@
+<%= link_to '添加商品', new_good_path,{:class=>'btn btn-success'} %>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>商品编码</th>
+      <th>商品名称</th>
+      <th>产品单价</th>
+      <th>规格</th>
+      <th>商品类型</th>
+      <th>备注</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @goods.each do |good| %>
+      <tr>
+        <td><%= good.code %></td>
+        <td><%= good.name %></td>
+        <td><%= good.price %></td>
+        <td><%= good.mode_count.to_s+good.mode_desc %></td>
+        <td><%= good.kind=='0'?'半成品':'成品' %></td>
+        <td><%= good.remark %></td>
+        <td><%= link_to '编辑', edit_good_path(good) %></td>
+        <td><%= link_to '删除', good, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+ <%= paginate @goods %>

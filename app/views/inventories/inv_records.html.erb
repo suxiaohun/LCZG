@@ -1,0 +1,68 @@
+<style type="text/css">
+  .in{
+    color: green;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .out{
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+  }
+</style>
+<div class="zmwy-search">
+  <%= form_tag('/inventories/inv_records', method: 'get') do %>
+      <ul>
+        <li class="zmwy-li-short">
+          <label>商品编码:</label>
+          <%= text_field_tag :code,params[:code] %>
+        </li>
+        <li class="zmwy-li-short">
+          <label>出入库日期:</label>
+          <%= date_field_tag :inv_date,{:value=>params[:inv_date]} %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li-short">
+          <label>商品名称:</label>
+          <%= text_field_tag :name,params[:name] %>
+        </li>
+        <li class="zmwy-li-short">
+          <label>出入库类型:</label>
+          <%= select_tag :flag,options_for_select([['入库','IN'],['出库','OUT']],params[:flag]),:prompt=>'--全部--' %>
+        </li>
+
+          <button type="submit" class="btn btn-info">搜索</button>
+
+      </ul>
+  <% end %>
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>商品编码</th>
+      <th>商品名称</th>
+      <th>出入库日期</th>
+      <th>出入库类型</th>
+      <th>数量</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @records.each do |rec|
+      style = rec.flag == 'IN' ? 'in' : 'out'
+      k = rec.flag == 'IN' ? '+' : '-'
+    %>
+        <tr>
+          <td><%= rec.good_code %></td>
+          <td><%= rec.good_name %></td>
+          <td><%= rec.inv_date %></td>
+          <td><%= rec.flag == 'IN' ? '入库' : '出库' %></td>
+          <td class="<%= style %>"><%= k+rec.count.to_s %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @records %>
+</div>

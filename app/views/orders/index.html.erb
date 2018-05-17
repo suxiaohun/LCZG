@@ -1,0 +1,61 @@
+<%= link_to '新建出货单', new_order_path, {:class => 'btn btn-success'} %>
+<%#= link_to '打印预览', {:action => 'print_pre'}, {:class => 'btn btn-success'} %>
+
+<hr>
+
+
+
+<div>
+  <div class="zmwy-search">
+    <%= form_tag(orders_path, method: 'get') do %>
+        <ul>
+          <li class="zmwy-li-short">
+            <label>客户名称:</label>
+            <%= text_field_tag :name,params[:name] %>
+          </li>
+          <li class="zmwy-li-short">
+            <label>订单日期:</label>
+            <%= date_field_tag :order_date,{:value=>params[:order_date]} %>
+          </li>
+          <li class="zmwy-li-short">
+            <button type="submit" class="btn btn-info">搜索</button>
+          </li>
+        </ul>
+    <% end %>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>单据编号</th>
+      <th>客户</th>
+      <th>日期</th>
+      <th>制单人</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.number %></td>
+          <td><%= order.customer_name %></td>
+          <td><%= order.order_date %></td>
+          <td><%= order.customer_name %></td>
+          <td><%#= link_to '打印', order %></td>
+          <td><%= link_to '打印', order %></td>
+          <td><%#= link_to '编辑', edit_order_path(order) %></td>
+          <td><%= link_to '删除', order, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @orders %>
+
+</div>
+
+
+

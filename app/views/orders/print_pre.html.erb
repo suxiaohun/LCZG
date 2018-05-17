@@ -1,0 +1,114 @@
+<style type="text/css">
+  table {
+    border-collapse: collapse;
+
+  }
+
+  td {
+    border: 1px solid blue;
+    padding: 5px;
+  }
+
+</style>
+
+
+
+
+
+<div id="myDiv">
+
+
+  <table>
+    <caption style="text-align: center">聊城智高文具有限公司</caption>
+    <tbody>
+    <tr>
+      <td colspan="3">单据日期：2017-07-11</td>
+      <td colspan="6" align="right">单据编号：XSD-2017-07-11-00001</td>
+    </tr>
+    <tr>
+      <td colspan="3">往来单位：湖南长沙王经理</td>
+      <td colspan="4">业务：</td>
+      <td colspan="2">制单：葛璐璐</td>
+    </tr>
+    <tr>
+      <td>行号</td>
+      <td>商品编码</td>
+      <td>商品名称</td>
+      <td>规格</td>
+      <td>单价</td>
+      <td>数量</td>
+      <td>金额</td>
+      <td>产品单价</td>
+      <td>备注</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>FD0450</td>
+      <td>6色PVC水晶泥</td>
+      <td>90盒每件</td>
+      <td>225</td>
+      <td>6</td>
+      <td>1350.00</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>FD0450</td>
+      <td>6色PVC水晶泥</td>
+      <td>90盒每件</td>
+      <td>225</td>
+      <td>6</td>
+      <td>1350.00</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="4">小计</td>
+      <td></td>
+      <td>12</td>
+      <td>2700.00</td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<button type="button" onclick="print_page('myDiv')" style="line-height: 50px;font-weight: bolder;background: lightblue">打印</button>
+<script type="text/javascript">
+    function print_page(elem) {
+        var mywindow = window.open('', 'PRINT');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            ' table{ border-collapse: collapse;'
+            + ' }' +
+            'td{' +
+            'border: 1px solid blue;' +
+            'padding: 5px;}' +
+                '  @page { size: auto;   margin: 0mm; }'+
+            '</style>';
+        mywindow.document.write('<html><head><title>' + '' + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(htmlToPrint);
+        mywindow.document.write('<h1>' + '' + '</h1>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+    $(function () {
+        $('#order_date').datetimepicker({
+            format: 'yyyy-mm-dd'
+        });
+    })
+
+
+</script>

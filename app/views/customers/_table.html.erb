@@ -1,0 +1,9 @@
+<% @customers.each do |customer| %>
+    <tr>
+      <td><%= customer.name %></td>
+      <td><%= customer.phone %></td>
+      <td><%= customer.address %></td>
+      <td><%= link_to '编辑', edit_customer_path(customer) %></td>
+      <td><%= link_to '删除', customer, method: :delete, data: { confirm: '确定删除客户?' } %></td>
+    </tr>
+<% end %>

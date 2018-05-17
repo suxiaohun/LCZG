@@ -1,0 +1,210 @@
+<style type="text/css">
+  #infoTable input {
+    width: 100px !important;
+  }
+
+  #infoTable select {
+    width: 170px !important;
+  }
+
+  .btn_del {
+    background: #fdc835;
+    min-width: 50px !important;
+  }
+
+</style>
+<%= form_for(@order, :builder => CustomFormBuilder) do |f| %>
+    <% if @order.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+          <ul>
+            <% @order.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="zmwy-search">
+
+      <ul>
+        <li class="zmwy-li">
+          <label>订单编号:</label>
+          <%= f.text_field :number, :disabled => true, :placeholder => '系统自动生成' %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li">
+          <label>订单日期:</label>
+          <%#= f.date_field :order_date %>
+          <%= f.date_field :order_date, :id => 'order_date', :value => Date.today %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li">
+          <label>客户名称:</label>
+          <%= f.select :customer_id, options_for_select(customers_list) %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li-long">
+          <label>备注:</label>
+          <%= f.text_field :remark %>
+        </li>
+      </ul>
+
+      <a href="javascript:void(0)" class="btn btn-info" style="clear: both;" onclick="addTr()">++新增行</a>
+      <button type="submit" class="btn btn-primary" onclick="return check_value();">保存</button>
+      <table id="infoTable" class="table table-striped">
+        <thead>
+        <tr>
+          <th width="10%">操作</th>
+          <th width="10%">商品</th>
+          <th width="15%">单价</th>
+          <th width="15%">数量</th>
+          <th width="20%">金额</th>
+          <th width="30%">备注</th>
+        </tr>
+        </thead>
+        <tbody id="order_body">
+        <%
+           @goods.limit(5).each_with_index do |good,index|
+             next if index>4
+             index+=1 %>
+            <tr id="tr_<%= index %>">
+              <td>
+                <button type='button' onclick="delTr('<%= index %>')" class="btn_del">删除</button>
+              </td>
+              <td>
+
+                <%= select_tag 'good[]',options_for_select(@options,good.id),:id=>'good_'+index.to_s %>
+              </td>
+              <td><input id="price_<%= index %>" name="price[]" type="text" rel="price" value="<%= good.price*good.mode_count %>" idx="<%= index %>"></td>
+              <td>
+                <input id="count_<%= index %>" name="count[]" type="number" flag='count' rel='count' idx="<%= index %>">
+              </td>
+              <td><input id="amount_<%= index %>" name="amount[]" type="text" flag='amount'></td>
+              <td><input id="remark_<%= index %>" name="remark[]" type="text"></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+
+<% end %>
+<script type="text/javascript">
+    var count = 5;
+    function addTr() {
+        var not_ids = $("#infoTable").find("select[name='good[]']").map(function (index, elem) {
+            return $(elem).val()
+        }).get().join(",");
+        count = count + 1;
+
+        var tr_count = 0;
+        $(".input_count").each(function () {
+            tr_count += parseFloat($(this).val())
+        });
+//        tr_count = (total_count - tr_count) < 0 ? 0 : (total_count - tr_count);
+        //获取table最后一行 $("#tab tr:last")
+        //获取table第一行 $("#tab tr").eq(0)
+        //获取table倒数第二行 $("#tab tr").eq(-2)
+        $.getJSON("/orders/get_goods", {
+            not_ids: not_ids,
+            _dom_id: 'modal_div'
+        }, function (data) {
+            if(data.length == 0){
+              alert("库存中没有其他商品了，请先添加库存！");
+                count = count - 1;
+            }else{
+                var options_hmtl = "";
+                var first_good_id = "";
+                for (var i = 0; i < data.length; i++) {
+                    if(i==0)first_good_id = data[i].value;
+                    options_hmtl += "<option value=" + data[i].value + ">" + data[i].label + "</option>";
+                }
+                var v_p = $("#good_" + count).val();
+                if (isPresent(first_good_id)) {
+                    set_price(v_p, count)
+                }
+                var trHtml = "<tr id='tr_" + count + "'>";
+                trHtml += "<td><button  type='button' onclick=\"delTr(" + count + ")\" class=\"btn_del\">删除</button></td>";
+                trHtml += "<td><select id=\"good_" + count + "\" name=\"good[]\" onchange=\"set_price(this.value," + count + ")\">"+options_hmtl+"</select></td>";
+                trHtml += "<td><input id=\"price_" + count + "\" name=\"price[]\"  type=\"text\" rel='price' idx=\"" + count + "\"></td>";
+                trHtml += "<td><input id=\"count_" + count + "\" name=\"count[]\"  type=\"number\" flag='count' rel='count' idx=\"" + count + "\"></td>";
+                trHtml += "<td><input id=\"amount_" + count + "\" name=\"amount[]\"  type=\"text\" flag='amount'></td>";
+                trHtml += "<td><input id=\"remark_" + count + "\" name=\"remark[]\"  type=\"text\"></td>";
+                trHtml += "</tr>";
+
+                $("#order_body").append(trHtml);
+            }
+        });
+
+
+    }
+
+    function delTr(index) {
+        $("#tr_" + index).remove();
+    }
+
+    function set_price(v, index) {
+        var selector = $("#price_" + index);
+        $.getJSON("/goods/get_good_by_id", {id: v, _dom_id: 'modal_div'}, function (data) {
+            selector.val(parseFloat(data.mode_price))
+        });
+    }
+
+    $(function () {
+
+        $("#infoTable").on('keyup', "input[rel='count']", function (e) {
+            e.preventDefault();
+            var idx = $(this).attr('idx');
+            var price = $("#price_" + idx).val();
+            var count = $(this).val();
+            if (isBlank(price)) price = 0.00;
+            if (isBlank(count)) count = 0.00;
+            var amount = parseFloat(count) * parseFloat(price);
+            $("#amount_" + idx).val(amount);
+        });
+
+        $("#infoTable").on('keyup', "input[rel='price']", function (e) {
+            e.preventDefault();
+            var idx = $(this).attr('idx');
+            var count = $("#count_" + idx).val();
+            var price = $(this).val();
+            if (isBlank(price)) price = 0.00;
+            if (isBlank(count)) count = 0.00;
+            var amount = parseFloat(count) * parseFloat(price);
+            $("#amount_" + idx).val(amount);
+        });
+
+    });
+
+
+    function check_value() {
+        var flag = true;
+        var length = $("#infoTable").find("input[flag='count']").length;
+        if (length == 0) {
+            alert('必须添加一项商品!');
+            return false
+        }
+
+        $("#infoTable").find("input[flag='count']").map(function (index, elem) {
+            if (isBlank($(elem).val()) || !$(elem).val() > 0) {
+                alert('商品数量不能为空，且必须大于0!');
+                flag = false;
+                $(elem).focus();
+                return false
+            }
+        });
+        if (flag) {
+            $("#infoTable").find("input[flag='amount']").map(function (index, elem) {
+                if (isBlank($(elem).val()) || !$(elem).val() > 0) {
+                    alert('商品金额不能为空，且必须大于0!');
+                    flag = false;
+                    $(elem).focus();
+                    return false
+                }
+            });
+        }
+        return flag
+    }
+</script>

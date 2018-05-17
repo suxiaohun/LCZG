@@ -1,0 +1,110 @@
+<style type="text/css">
+  table {
+    border-collapse: collapse;
+
+  }
+
+  td, th {
+    border: 2px solid #8CA0C1;
+    /*padding: 5px;*/
+    text-align: center;
+  }
+
+  .number {
+    text-align: right;
+    padding-right: 3px;
+  }
+</style>
+<button type="button" onclick="print_page('myDiv')" class="btn btn-info">打印</button>
+
+
+
+
+
+<div id="myDiv">
+
+
+  <table width="100%">
+    <caption style="text-align: center;font-weight: bolder;font-size: 20px;">库存状况表</caption>
+    <thead>
+    <tr>
+      <th>行号</th>
+      <th>商品编码</th>
+      <th>商品名称</th>
+      <th>单位</th>
+      <th>数量</th>
+      <th>单价</th>
+      <th>成本金额</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+      total_count = 0
+      total_amount = 0
+      @inventories.each_with_index do |inventory, i|
+        total_count+=inventory.count
+        total_amount+=inventory.amount
+    %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><%= inventory.good_code %></td>
+          <td><%= inventory.good_name %></td>
+          <td>件</td>
+          <td class="number"><%= inventory.count %></td>
+          <td class="number"><%= inventory.price.round(2) %></td>
+          <td class="number"><%= inventory.amount %></td>
+        </tr>
+    <% end %>
+    <!--<tr>-->
+      <!--<td colspan="4" style="text-align: left;padding-left: 15px;">小计:</td>-->
+      <!--<td class="number"><%#= total_count %></td>-->
+      <!--<td></td>-->
+      <!--<td class="number"><%#= total_amount %></td>-->
+    <!--</tr>-->
+    <tr>
+      <td colspan="4" style="text-align: left;padding-left: 15px;">合计:</td>
+      <td class="number"><%= total_count %></td>
+      <td></td>
+      <td class="number"><%= total_amount %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+    function print_page(elem) {
+        var mywindow = window.open('', 'PRINT');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            ' table{ border-collapse: collapse;'
+            + ' }' +
+            'td,th{' +
+            'border: 2px solid #8CA0C1;' +
+            'text-align: center;}' +
+            '.number { text-align: right; padding-right: 3px; }' +
+            '  @page { size: auto;   margin: 0mm; }' +
+            '</style>';
+        mywindow.document.write('<html><head><title>' + '' + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(htmlToPrint);
+        mywindow.document.write('<h1>' + '' + '</h1>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+    $(function () {
+        $('#order_date').datetimepicker({
+            format: 'yyyy-mm-dd'
+        });
+    })
+
+
+</script>

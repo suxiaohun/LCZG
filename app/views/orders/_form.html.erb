@@ -1,0 +1,49 @@
+<%= form_for(@order) do |f| %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% @order.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="zmwy-search">
+
+      <ul>
+        <li class="zmwy-li">
+          <label>商品名称:</label>
+          <%= f.select :good_id,options_for_select(goods_list) %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li">
+          <label>商品名称:</label>
+          <%= f.text_field :name %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li">
+          <label>单价:</label>
+          <%= f.number_field :price %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li">
+          <label>规格:</label>
+          <%= f.text_field :mode %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li-long">
+          <label>备注:</label>
+          <%= f.text_field :remark %>
+        </li>
+        <li class="clearfix"></li>
+        <li class="zmwy-li-operation">
+          <%= f.submit '保存' %>
+        </li>
+      </ul>
+
+    </div>
+
+<% end %>

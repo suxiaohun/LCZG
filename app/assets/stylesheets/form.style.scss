@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    font-family: '微软雅黑', 'microsoft yahei', serif;
+    empty-cells: show;
+    border-collapse: collapse;
+    border: 0;
+}
+.zmwy-search {
+    background: #f8f9fa;
+    border: 1px solid #e8e8e8;
+    overflow: visible;
+    float: left;
+    /*clear: both;*/
+    padding: 10px 0 15px 0;
+    width: 100%;
+}
+
+.zmwy-search > ul {
+    float: left;
+    width: 100%;
+    display: inline;
+}
+
+.zmwy-search .zmwy-li {
+    width: 335px;
+    line-height: 30px;
+    display: inline-block;
+    /*border: 1px solid red;*/
+}
+
+.zmwy-search .zmwy-2li {
+    width: 335px;
+}
+
+.zmwy-search .zmwy-2li .date-input {
+    min-width: 100px;
+    width: 100px !important;
+}
+
+.zmwy-search .zmwy-li .date-input {
+    width: 210px;
+}
+
+.zmwy-li-short{
+  width: 250px!important;
+  display: inline-block;
+}
+
+.zmwy-li-short input,.zmwy-li-short select{
+  width: 120px!important;
+}
+
+.zmwy-search .zmwy-li-long{
+    width: 500px;
+}
+
+.zmwy-li-long input[type='text']{
+    width: 350px!important;
+}
+
+.zmwy-search > ul > li p {
+    display: inline;
+}
+
+.zmwy-search .zmwy-li > label, .zmwy-search .zmwy-2li > label,.zmwy-li-long>label {
+    width: 93px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+    text-align: right;
+    margin-bottom: 0;
+    /*border: 1px solid blue;*/
+}
+
+.zmwy-search select {
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    width: 210px;
+    height: 23px;
+    margin-left: 5px;
+    border: 1px solid #a8a8a8;
+    /*box-shadow: 2px 2px 3px #dadada inset;*/
+    /*border-radius: 4px;*/
+    line-height: 150%;
+    /*很关键：将默认的select选择框样式清除*/
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: image-url("img/arrow_icon.png") right top no-repeat #fff;
+    /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    padding: 0 4px !important
+}
+
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+.zmwy-search select::-ms-expand {
+    display: none;
+}
+
+.zmwy-search input[type="text"], .zmwy-search input[type="number"], .zmwy-search input[type="password"] {
+    width: 210px;
+    height: 23px;
+    line-height: 23px;
+    margin-left: 5px;
+    border: 1px solid #a8a8a8;
+    /*box-shadow: 2px 2px 2px #dadada inset;*/
+    /*border-radius: 2px;*/
+    border-radius: 0 !important;
+    padding: 0 4px !important
+}
+
+.zmwy-search input[type="checkbox"] {
+    /*margin-left: 5px;*/
+}
+
+.zmwy-li-operation{
+    margin-top:5px;
+    text-align: center;
+}
+
+.zmwy-li-operation a, .zmwy-li-operation input[type='button'], .zmwy-li-operation input[type='submit'] {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #44619d;
+    display: inline-block;
+    margin: 0 5px;
+    /*border-radius: 5px;*/
+    font-size: 12px;
+    font-weight: 200;
+    color: #fff;
+}
+.zmwy-li-textarea {
+    width: 754px !important;
+    height: 80px;
+    color: #333333;
+    font-size: 13px;
+    display: inline-block;
+    margin: 4px 10px;
+    float: left;
+}
+
+.zmwy-li-textarea textarea {
+    display: block;
+    float: left;
+    width: 624px;
+    height: 75px;
+    resize: none;
+    line-height: 16px;
+    border: 1px solid #ccc;
+    /*border-radius: 5px;*/
+    margin-left: 5px;
+}
+
+.zmwy-li-textarea-shorter {
+    width: 400px !important;
+    height: 80px;
+    color: #333333;
+    font-size: 13px;
+    display: inline-block;
+    margin: 4px 10px;
+    float: left;
+}
+
+.zmwy-li-textarea-shorter textarea {
+    display: block;
+    float: left;
+    width: 223px;
+    height: 75px;
+    resize: none;
+    line-height: 16px;
+    border: 1px solid #ccc;
+    /*border-radius: 5px;*/
+    margin-left: 5px;
+}
+
+.date-input {
+    background: image-url('icons/date-icon.png') 98% center #fff no-repeat !important;
+    width: 150px !important;
+}
+
+input[readonly='readonly'], input[disabled='disabled'] {
+    background: #dddddd;
+}
+
+.clear-fix {
+    *zoom: 1;
+    content: '';
+    display: block !important;
+    clear: both;
+    float: none;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.tips{
+  font-weight: bold;
+  color: blue;
+  border: 1px solid blue;
+  padding: 0 5px;
+}
