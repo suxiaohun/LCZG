@@ -13,7 +13,7 @@ working_directory Rails.root  # available in 0.94.0+ 在这里修改为项目所
 
 listen "/tmp/unicorn_lczg.sock", :backlog => 512
 
-listen 3002, :tcp_nopush => true  # 端口号，NginX需要用到此端口号
+listen 3000, :tcp_nopush => true  # 端口号，NginX需要用到此端口号
 
 timeout 150
 
